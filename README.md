@@ -108,7 +108,7 @@ Output:
   Netflix NFToken Generated
 ============================================================
 
-  Link:    https://netflix.com/?nftoken=BgiQvuvcAxLC...
+  Link:    https://netflix.com/?nftoken=<TOKEN>...
 
   Expires: 2026-08-18 12:55:53
   TTL:     3888 seconds (64 minutes)
@@ -139,7 +139,7 @@ Output:
 [11:51:05] Daemon mode started
 [11:51:05]   Refresh interval: 3000 seconds (50 minutes)
 [11:51:05] NFToken generated | TTL: 64 min | Expires: 2026-08-18 12:55:53
-[11:51:05] Link: https://netflix.com/?nftoken=BgiQvuvcAxLC...
+[11:51:05] Link: https://netflix.com/?nftoken=<TOKEN>...
 [11:51:05] Written to: link.txt
 [11:51:05] Next refresh in 50 minutes...
 ```
@@ -290,7 +290,7 @@ Response:
     "account": {
       "token": {
         "default": {
-          "token": "BgiQvuvcAxLC...",
+          "token": "<TOKEN_VALUE>",
           "expires": 1787028953214,
           "$type": "leaf"
         }
