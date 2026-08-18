@@ -41,8 +41,86 @@ Solusi: gunakan **mode daemon** untuk auto-refresh link sebelum expired.
 ```bash
 git clone https://github.com/syafrieyunizar/netflix-nftoken-generator.git
 cd netflix-nftoken-generator
-pip install -r requirements.txt
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
 ```
+
+## Agent Quick Start (untuk Hermes / AI Agent)
+
+Jika Anda adalah AI agent yang baru di-deploy ke VPS baru dan user memberikan link repo ini, ikuti langkah berikut:
+
+### 1. Setup sekali
+
+```bash
+cd /home/<user>
+git clone https://github.com/syafrieyunizar/netflix-nftoken-generator.git
+cd netflix-nftoken-generator
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+```
+
+### 2. Minta cookie dari user (1x per akun)
+
+User perlu kirim cookie `NetflixId` dari browser yang sedang login Netflix.
+Simpan ke config per akun:
+
+```bash
+cp config.example.json config-friendshouse.json
+# Edit config-friendshouse.json, isi netflix_id, secure_netflix_id, nfvdid
+```
+
+Multi-account: buat config terpisah per akun:
+
+```
+config-friendshouse.json   → Akun 1
+config-family.json         → Akun 2
+config-personal.json       → Akun 3
+```
+
+### 3. Saat user minta link (on-demand)
+
+User: "Minta link Netflix Friendshouse"
+
+Agent jalankan:
+
+```bash
+cd /home/<user>/netflix-nftoken-generator
+.venv/bin/python3 nftoken_generator.py --config config-friendshouse.json
+```
+
+Parse output, kirim link ke user. Link fresh, TTL ~65 menit.
+
+### 4. Kalau cookie expired
+
+Script return: `No token in response` atau `value: {}`
+
+Minta user kirim cookie `NetflixId` baru dari browser.
+Update config, jalan lagi.
+
+### 5. Simpan info akun ke memory/fact_store
+
+Agar ingat across sessions:
+
+```
+Netflix account "Friendshouse" → config di /home/<user>/netflix-nftoken-generator/config-friendshouse.json
+Netflix account "Family" → config di /home/<user>/netflix-nftoken-generator/config-family.json
+```
+
+### 6. Mode operasi
+
+| Mode | Kapan dipakai | Command |
+|------|--------------|---------|
+| On-demand | User minta link → generate saat itu juga | `python3 nftoken_generator.py --config config-XXX.json` |
+| Daemon 24 jam | Link selalu ready, auto-refresh | `python3 nftoken_generator.py --config config-XXX.json --daemon` |
+
+**Rekomendasi**: On-demand. Link selalu fresh, tidak buang API call.
+
+### 7. Jangan commit secret
+
+- `config.json` dan `config-*.json` berisi cookie = **SECRET**
+- Sudah di `.gitignore`
+- Jangan pernah `git add config*.json`
+- Jangan push cookie ke GitHub
 
 ## Cara Ambil Cookie Netflix
 
