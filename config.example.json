@@ -1,0 +1,12 @@
+{
+  "netflix_id": "",
+  "secure_netflix_id": "",
+  "nfvdid": "",
+  "refresh_interval_sec": 3000,
+  "telegram": {
+    "enabled": false,
+    "bot_token": "",
+    "chat_id": ""
+  },
+  "output_file": ""
+}
